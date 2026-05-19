@@ -6,24 +6,22 @@ on:
       - main
 
 jobs:
-  test-compose-stack:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Start Docker Compose Stack
+      - name: Start stack
         run: docker compose up -d
 
-      - name: Wait for services to be ready
+      - name: Wait
         run: sleep 15
 
-      - name: Test the Web Service
-        run: |
-          echo "Testing if Nginx is responding on port 8080..."
-          curl -f http://localhost:8080 || exit 1
+      - name: Test service
+        run: curl -f http://localhost:8080 || exit 1
 
-      - name: Tear down stack
+      - name: Cleanup
         if: always()
         run: docker compose down
